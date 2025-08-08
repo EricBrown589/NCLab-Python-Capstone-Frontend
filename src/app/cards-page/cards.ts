@@ -21,15 +21,4 @@ export class CardPage implements OnInit {
     ngOnInit(): void {
         this.cards$ = this.dataService.getCards();
     }
-
-    
-
-    public onClick(value: string) {
-        if (value == "deck") {
-            this.router.navigateByUrl('/decks')
-        }
-        else if (value == "home") {
-            this.router.navigateByUrl('')
-        }
-    }
 }
