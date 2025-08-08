@@ -14,13 +14,4 @@ export class CardPage implements OnInit {
     ngOnInit(): void {
         
     }
-
-    public onClick(value: string) {
-        if (value == "deck") {
-            this.router.navigateByUrl('/decks')
-        }
-        else if (value == "home") {
-            this.router.navigateByUrl('')
-        }
-    }
 }
