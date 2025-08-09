@@ -13,4 +13,9 @@ export class DataService {
   getCards(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiURL}/cards`);
   }
+
+  postCard(data: any): Observable<any> {
+    const body = data
+    return this.http.post<any>(`${this.apiURL}/cards/post`, body)
+  }
 }

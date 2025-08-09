@@ -3,10 +3,10 @@ import { Router } from "@angular/router";
 import { DataService } from "../data-service";
 import { CommonModule } from "@angular/common";
 import { Observable } from "rxjs";
-
+import { FormsModule } from "@angular/forms";
 @Component({
     selector: 'card-page',
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule],
     templateUrl: './cards.html',
     styleUrl: './cards.css'
 })
@@ -14,11 +14,23 @@ import { Observable } from "rxjs";
 export class CardPage implements OnInit {
 
     cards$!: Observable<any[]>;
-
+    cardData = {
+        name: ''
+    }
 
     constructor(private router: Router, public route: Router, private dataService: DataService) {}
 
     ngOnInit(): void {
-        this.cards$ = this.dataService.getCards();
+        this.getCards();
+    }
+    
+    getCards() {
+        this.cards$ = this.dataService.getCards()
+    }
+
+    sendCard() {
+        this.dataService.postCard(this.cardData).subscribe(() => {
+            this.getCards();
+        });
     }
 }

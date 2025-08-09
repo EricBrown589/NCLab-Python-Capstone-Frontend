@@ -6,3 +6,10 @@
         Price: ${{c.price}}
     </ul>
 </div>
+
+<div>
+    <form>
+        <input [(ngModel)]="cardData.name" name="name" placeholder="Card Name">
+        <button (click)="sendCard()">Submit</button>
+    </form>
+</div>
