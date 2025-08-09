@@ -4,6 +4,13 @@ import { DataService } from "../data-service";
 import { CommonModule } from "@angular/common";
 import { Observable } from "rxjs";
 import { FormsModule } from "@angular/forms";
+
+interface CardData {
+    name: string;
+    price: number;
+    image_url: string;
+    amountOwned: number;
+}
 @Component({
     selector: 'card-page',
     imports: [CommonModule, FormsModule],
@@ -13,7 +20,7 @@ import { FormsModule } from "@angular/forms";
 
 export class CardPage implements OnInit {
 
-    cards$!: Observable<any[]>;
+    cards$!: Observable<CardData[]>;
     cardData = {
         name: ''
     }
@@ -26,6 +33,7 @@ export class CardPage implements OnInit {
     
     getCards() {
         this.cards$ = this.dataService.getCards()
+        console.log(this.cards$)
     }
 
     sendCard() {

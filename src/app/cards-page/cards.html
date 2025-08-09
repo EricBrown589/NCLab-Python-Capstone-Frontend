@@ -1,15 +1,23 @@
 <header>Cards</header>
 
-<div *ngIf="cards$ | async as cards">
-    <ul *ngFor="let c of cards">
-        Name: {{c.name}}
-        Price: ${{c.price}}
+<div>
+    <p class="search">Add a card by name to see its price and image:</p>
+    <!-- Form to submit a new card -->
+    <form (ngSubmit)="sendCard()">
+        <input [(ngModel)]="cardData.name" name="name" placeholder="Card Name">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div *ngIf="cards$ | async as card">
+    <ul>
+        <li *ngFor="let c of card">
+            <img [src]="c.image_url">
+            <div>
+                <p>Name: {{c.name}}</p>
+                <p>Price: ${{c.price}}</p>
+            </div>
+        </li>
     </ul>
 </div>
 
-<div>
-    <form>
-        <input [(ngModel)]="cardData.name" name="name" placeholder="Card Name">
-        <button (click)="sendCard()">Submit</button>
-    </form>
-</div>
