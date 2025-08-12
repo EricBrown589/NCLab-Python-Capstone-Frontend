@@ -22,10 +22,13 @@ interface CardData {
 
 export class CardPage implements OnInit {
 
-    cards$!: Observable<CardData[]>;
     cardData = {
         name: ''
     }
+    cards: CardData[] = [];
+    pagedCards: CardData[] = [];
+    currentPage = 1;
+    pageSize = 12;
 
     constructor(private router: Router, public route: Router, private dataService: DataService) {}
 
@@ -34,12 +37,39 @@ export class CardPage implements OnInit {
     }
     
     getCards() {
-        this.cards$ = this.dataService.getCards()
-        console.log(this.cards$)
+        this.dataService.getCards().subscribe((data: CardData[]) => {
+            this.cards = data;
+            this.setPagedCards();
+        });
+    }
+
+    setPagedCards() {
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        this.pagedCards = this.cards.slice(startIndex, endIndex);
+    }
+
+    nextPage() {
+        if (this.currentPage * this.pageSize < this.cards.length) {
+            this.currentPage++;
+            this.setPagedCards();
+        }
+    }
+
+    previousPage() {
+        if (this.currentPage > 1) {
+            this.currentPage--;
+            this.setPagedCards();
+        }
+    }
+
+    getTotalPages(): number {
+        return Math.ceil(this.cards.length / this.pageSize);
     }
 
     addCard() {
         this.dataService.postCard(this.cardData).subscribe(() => {
+            this.cardData.name = '';
             this.getCards();
         });
     }

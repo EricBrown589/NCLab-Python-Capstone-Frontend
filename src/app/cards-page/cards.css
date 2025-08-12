@@ -1,6 +1,6 @@
 ul {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
     gap: 20px;
     padding: 0;
 }
@@ -12,6 +12,12 @@ ul li {
     list-style: none;
 }
 
-.class {
-    margin: 10px 0;
+.pagnination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagnination button {
+    margin: 0 5px;
+    cursor: pointer;
 }
