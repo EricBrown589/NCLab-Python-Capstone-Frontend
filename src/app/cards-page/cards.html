@@ -3,7 +3,7 @@
 <div>
     <p class="search">Add a card by name to see its price and image:</p>
     <!-- Form to submit a new card -->
-    <form (ngSubmit)="sendCard()">
+    <form (ngSubmit)="addCard()">
         <input [(ngModel)]="cardData.name" name="name" placeholder="Card Name">
         <button type="submit">Submit</button>
     </form>
@@ -16,6 +16,10 @@
             <div>
                 <p>Name: {{c.name}}</p>
                 <p>Price: ${{c.price}}</p>
+                <p>Owned: {{c.amount_owned}} 
+                    <button (click)="increaseAmountOwned(c)">+</button>
+                    <button (click)="decreaseAmountOwned(c)">-</button>
+                </p>
             </div>
         </li>
     </ul>

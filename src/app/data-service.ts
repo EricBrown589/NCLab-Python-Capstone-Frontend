@@ -6,7 +6,7 @@ interface CardData {
   name: string;
   price: number;
   image_url: string;
-  amountOwned: number;
+  amount_owned: number;
 }
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,9 @@ export class DataService {
   postCard(data: any): Observable<any> {
     const body = data
     return this.http.post<any>(`${this.apiURL}/cards/post`, body)
+  }
+
+  updateCard(card: CardData): Observable<CardData> {
+    return this.http.put<CardData>(`${this.apiURL}/cards/update`, card);
   }
 }

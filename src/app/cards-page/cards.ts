@@ -9,7 +9,7 @@ interface CardData {
     name: string;
     price: number;
     image_url: string;
-    amountOwned: number;
+    amount_owned: number;
 }
 @Component({
     selector: 'card-page',
@@ -36,9 +36,24 @@ export class CardPage implements OnInit {
         console.log(this.cards$)
     }
 
-    sendCard() {
+    addCard() {
         this.dataService.postCard(this.cardData).subscribe(() => {
             this.getCards();
         });
+    }
+
+    increaseAmountOwned(card: CardData) {
+        card.amount_owned += 1;
+        this.dataService.updateCard(card).subscribe(() => {
+            this.getCards();
+        });
+    }
+    decreaseAmountOwned(card: CardData) {
+        if (card.amount_owned > 0) {
+            card.amount_owned -= 1;
+            this.dataService.updateCard(card).subscribe(() => {
+                this.getCards();
+            });
+        }
     }
 }
