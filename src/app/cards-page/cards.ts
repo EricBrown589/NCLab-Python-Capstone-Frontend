@@ -6,8 +6,10 @@ import { Observable } from "rxjs";
 import { FormsModule } from "@angular/forms";
 
 interface CardData {
+    card_id: number;
     name: string;
     price: number;
+    card_uid: string;
     image_url: string;
     amount_owned: number;
 }
@@ -49,9 +51,17 @@ export class CardPage implements OnInit {
         });
     }
     decreaseAmountOwned(card: CardData) {
-        if (card.amount_owned > 0) {
+        if (card.amount_owned > 1) {
             card.amount_owned -= 1;
             this.dataService.updateCard(card).subscribe(() => {
+                this.getCards();
+            });
+        } else if (card.amount_owned === 1){
+            card.amount_owned = 0;
+            this.dataService.updateCard(card).subscribe(() => {
+                this.getCards();
+            });
+            this.dataService.deleteCard(card).subscribe(() => {
                 this.getCards();
             });
         }

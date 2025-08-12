@@ -3,8 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface CardData {
+  card_id: number;
   name: string;
   price: number;
+  card_uid: string;
   image_url: string;
   amount_owned: number;
 }
@@ -27,5 +29,9 @@ export class DataService {
 
   updateCard(card: CardData): Observable<CardData> {
     return this.http.put<CardData>(`${this.apiURL}/cards/update`, card);
+  }
+
+  deleteCard(card: CardData): Observable<any> {
+    return this.http.delete(`${this.apiURL}/cards/delete/${card.card_id}`);
   }
 }
