@@ -12,12 +12,12 @@ ul li {
     list-style: none;
 }
 
-.pagnination {
+.pagination {
     text-align: center;
     margin-top: 20px;
 }
 
-.pagnination button {
+.pagination button {
     margin: 0 5px;
     cursor: pointer;
 }
