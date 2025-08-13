@@ -1,3 +1,4 @@
+/* Navbar container styling */
 .navbar-links {
     display: flex;
     list-style: none;
@@ -6,6 +7,7 @@
     margin-bottom: -2px;
 }
 
+/* Individual link styling */
 ul li {
     margin: 20px;
 }

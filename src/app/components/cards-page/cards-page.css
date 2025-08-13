@@ -1,3 +1,4 @@
+/* Grid layout for card list */
 ul {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -5,6 +6,7 @@ ul {
     padding: 0;
 }
 
+/* Individual card styling */
 ul li {
     display: flex;
     flex-direction: column;
@@ -12,11 +14,13 @@ ul li {
     list-style: none;
 }
 
+/* Pagination container styling */
 .pagination {
     text-align: center;
     margin-top: 20px;
 }
 
+/* Pagination button styling */
 .pagination button {
     margin: 0 5px;
     cursor: pointer;

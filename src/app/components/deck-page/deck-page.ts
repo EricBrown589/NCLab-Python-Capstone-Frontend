@@ -32,6 +32,7 @@ export class DeckPage implements OnInit {
         this.getDecks();
     }
 
+    // Fetch the list of decks from the backend using the DataService and set the pagedDecks
     getDecks() {
         this.dataService.getDecks().subscribe((data: DeckData[]) => {
             this.decks = data;
@@ -39,12 +40,14 @@ export class DeckPage implements OnInit {
         });
     }
 
+    // Calculate start and end indices for slicing the decks array
     setPagedDecks() {
         const startIndex = (this.currentPage - 1) * this.pageSize;
         const endIndex = startIndex + this.pageSize;
-        this.pagedDecks = this.decks.slice(startIndex, endIndex);
+        this.pagedDecks = this.decks.slice(startIndex, endIndex); // Slice the decks array to get the current page's decks
     }
 
+    // Check if there are more pages available to go to the next page and update the pagedDecks
     nextPage() {
         if (this.currentPage * this.pageSize < this.decks.length) {
             this.currentPage++;
@@ -52,6 +55,7 @@ export class DeckPage implements OnInit {
         }
     }
 
+    // Check if the current page is greater than 1 to go to the previous page and update the pagedDecks
     previousPage() {
         if (this.currentPage > 1) {
             this.currentPage--;
@@ -59,10 +63,12 @@ export class DeckPage implements OnInit {
         }
     }
 
+    // Calculate the total number of pages based on the total number of decks and page size
     getTotalPages(): number {
         return Math.ceil(this.decks.length / this.pageSize);
     }
 
+    // Add a new deck using the DataService and refresh the deck list
     addDeck() {
         this.dataService.addDeck(this.deckData).subscribe(() => {
             this.deckData.name = '';
@@ -70,6 +76,7 @@ export class DeckPage implements OnInit {
         });
     }
 
+    // Delete a deck after user confirmation and refresh the deck list
     deleteDeck(deck: DeckData) {
         if (window.confirm(`Are you sure you want to delete the deck "${deck.name}"?`)) {
             this.dataService.deleteDeck(deck).subscribe(() => {
