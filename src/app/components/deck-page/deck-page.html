@@ -15,7 +15,9 @@
     <ul>
         <li *ngFor="let d of pagedDecks">
             <div>
-                <p>Name: {{d.name}}</p>
+                <p>
+                    <a [routerLink]="['/deck-cards', d.deck_id, 'cards']">{{d.name}}</a>
+                </p>
                 <button (click)="deleteDeck(d)">Delete</button>
             </div>
         </li>

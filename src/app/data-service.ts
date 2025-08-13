@@ -52,4 +52,12 @@ export class DataService {
   deleteDeck(deck: DeckData): Observable<any> {
     return this.http.delete(`${this.apiURL}/decks/delete/${deck.deck_id}`);
   }
+
+  getDeckCards(deckId: number): Observable<CardData[]> {
+    return this.http.get<CardData[]>(`${this.apiURL}/decks/${deckId}/cards`);
+  }
+
+  addCardToDeck(deckId: number, cardName: string): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}/decks/${deckId}/cards/add`, { name: cardName });
+  }
 }

@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { DataService } from "../../data-service";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
 
 
 interface DeckData {
@@ -13,7 +14,7 @@ interface DeckData {
     selector: 'deck-page',
     templateUrl: './deck-page.html',
     styleUrl: './deck-page.css',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, RouterLink],
 })
 
 export class DeckPage implements OnInit {
