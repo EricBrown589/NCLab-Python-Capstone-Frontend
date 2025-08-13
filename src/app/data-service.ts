@@ -10,6 +10,11 @@ interface CardData {
   image_url: string;
   amount_owned: number;
 }
+
+interface DeckData {
+  deck_id: number;
+  name: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +38,14 @@ export class DataService {
 
   deleteCard(card: CardData): Observable<any> {
     return this.http.delete(`${this.apiURL}/cards/delete/${card.card_id}`);
+  }
+
+  getDecks(): Observable<DeckData[]> {
+    return this.http.get<DeckData[]>(`${this.apiURL}/decks`);
+  }
+
+  addDeck(data: any): Observable<any> {
+    const body = data
+    return this.http.post<any>(`${this.apiURL}/decks/add`, body)
   }
 }
