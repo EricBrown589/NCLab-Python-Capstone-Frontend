@@ -70,8 +70,10 @@ export class DeckPage implements OnInit {
     }
 
     deleteDeck(deck: DeckData) {
-        this.dataService.deleteDeck(deck).subscribe(() => {
-            this.getDecks();
-        });
+        if (window.confirm(`Are you sure you want to delete the deck "${deck.name}"?`)) {
+            this.dataService.deleteDeck(deck).subscribe(() => {
+                this.getDecks();
+            });
+        }
     }
 }
