@@ -68,4 +68,10 @@ export class DeckPage implements OnInit {
             this.getDecks();
         });
     }
+
+    deleteDeck(deck: DeckData) {
+        this.dataService.deleteDeck(deck).subscribe(() => {
+            this.getDecks();
+        });
+    }
 }

@@ -48,4 +48,8 @@ export class DataService {
     const body = data
     return this.http.post<any>(`${this.apiURL}/decks/add`, body)
   }
+
+  deleteDeck(deck: DeckData): Observable<any> {
+    return this.http.delete(`${this.apiURL}/decks/delete/${deck.deck_id}`);
+  }
 }

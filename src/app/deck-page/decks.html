@@ -16,6 +16,7 @@
         <li *ngFor="let d of pagedDecks">
             <div>
                 <p>Name: {{d.name}}</p>
+                <button (click)="deleteDeck(d)">Delete</button>
             </div>
         </li>
     </ul>
