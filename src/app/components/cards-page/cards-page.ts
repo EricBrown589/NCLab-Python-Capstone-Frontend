@@ -29,6 +29,8 @@ export class CardsPage implements OnInit {
     pagedCards: CardData[] = [];
     currentPage = 1;
     pageSize = 12;
+    sortbyNameAsc = true;
+    sortbyPriceAsc = true;
 
     constructor(private router: Router, public route: Router, private dataService: DataService) {}
 
@@ -95,5 +97,21 @@ export class CardsPage implements OnInit {
                 this.getCards();
             });
         }
+    }
+
+    sortByName() {
+        this.cards.sort((a, b) => 
+            this.sortbyNameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+        );
+        this.sortbyNameAsc = !this.sortbyNameAsc;
+        this.setPagedCards();
+    }
+
+    sortByPrice() {
+        this.cards.sort((a, b) => 
+            this.sortbyPriceAsc ? a.price - b.price : b.price - a.price
+        );
+        this.sortbyPriceAsc = !this.sortbyPriceAsc;
+        this.setPagedCards();
     }
 }

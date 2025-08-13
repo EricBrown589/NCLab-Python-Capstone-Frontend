@@ -10,6 +10,10 @@
 </div>
 
 <div>
+    <div>
+        <button (click)="sortByName()">Sort by Name</button>
+        <button (click)="sortByPrice()">Sort by Price</button>
+    </div>
     <ul>
         <li *ngFor="let c of pagedCards">
             <img [src]="c.image_url">
