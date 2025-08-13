@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { DataService } from "../data-service";
+import { DataService } from "../../data-service";
 import { CommonModule } from "@angular/common";
 import { Observable } from "rxjs";
 import { FormsModule } from "@angular/forms";
@@ -14,13 +14,13 @@ interface CardData {
     amount_owned: number;
 }
 @Component({
-    selector: 'card-page',
+    selector: 'cards-page',
     imports: [CommonModule, FormsModule],
-    templateUrl: './cards.html',
-    styleUrl: './cards.css'
+    templateUrl: './cards-page.html',
+    styleUrl: './cards-page.css'
 })
 
-export class CardPage implements OnInit {
+export class CardsPage implements OnInit {
 
     cardData = {
         name: ''

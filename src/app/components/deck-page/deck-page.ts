@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { DataService } from "../data-service";
+import { DataService } from "../../data-service";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
@@ -11,8 +11,8 @@ interface DeckData {
 }
 @Component({
     selector: 'deck-page',
-    templateUrl: './decks.html',
-    styleUrl: './decks.css',
+    templateUrl: './deck-page.html',
+    styleUrl: './deck-page.css',
     imports: [CommonModule, FormsModule],
 })
 
