@@ -28,8 +28,8 @@ export class CardsPage implements OnInit {
     pagedCards: CardData[] = [];
     currentPage = 1;
     pageSize = 12;
-    sortbyNameAsc = true;
-    sortbyPriceAsc = true;
+    sortKey: 'name' | 'price' | null = null;
+    sortDirection: 'asc' | 'desc' = 'asc';
     selectedColors: string[] = [];
     selectedType: string = '';
 
@@ -50,6 +50,7 @@ export class CardsPage implements OnInit {
                 this.cards = [];
             }
             this.currentPage = 1; // Reset to first page on new fetch
+            this.applySorting(); // Apply sorting after fetching
             this.setPagedCards();
             this.cdr.detectChanges(); // Ensure view updates with new data
         });
@@ -110,19 +111,42 @@ export class CardsPage implements OnInit {
     }
 
     sortByName() {
-        this.cards.sort((a, b) => 
-            this.sortbyNameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
-        );
-        this.sortbyNameAsc = !this.sortbyNameAsc;
-        this.setPagedCards();
+        if (this.sortKey === 'name') {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortKey = 'name';
+            this.sortDirection = 'asc';
+        }
+        this.applySorting()
     }
 
     sortByPrice() {
-        this.cards.sort((a, b) => 
-            this.sortbyPriceAsc ? a.price - b.price : b.price - a.price
-        );
-        this.sortbyPriceAsc = !this.sortbyPriceAsc;
-        this.setPagedCards();
+        if (this.sortKey === 'price') {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortKey = 'price';
+            this.sortDirection = 'asc';
+        }
+        this.applySorting()
+    }
+
+    applySorting() {
+        if (!this.sortKey) return;
+
+        this.cards = [...this.cards].sort((a, b) => {
+            if (this.sortKey === 'name') {
+                return this.sortDirection === 'asc'
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
+            }
+            if (this.sortKey === 'price') {
+                return this.sortDirection === 'asc'
+                    ? a.price - b.price
+                    : b.price - a.price;
+            }
+            return 0;
+        });
+    this.setPagedCards();
     }
 
     toggleColor(color: string, event: any) {
@@ -141,10 +165,13 @@ export class CardsPage implements OnInit {
         this.getCards(); // Fetch cards with updated filters
     }
 
-    clearFilters() {
+    resetPage() {
         // Clear selected colors and type
         this.selectedColors = [];
         this.selectedType = '';
+        //Clear sorting
+        this.sortKey = null;
+        this.sortDirection = 'asc';
         // Uncheck all checkboxes
         const checkboxes = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
         checkboxes.forEach(checkbox => {

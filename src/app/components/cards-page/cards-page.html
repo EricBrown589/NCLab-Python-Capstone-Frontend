@@ -11,8 +11,14 @@
 
 <div>
     <div>
-        <button (click)="sortByName()">Sort by Name</button>
-        <button (click)="sortByPrice()">Sort by Price</button>
+        <button (click)="sortByName()">
+            Sort by Name
+            <span *ngIf="sortKey === 'name'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+        </button>
+        <button (click)="sortByPrice()">
+            Sort by Price
+            <span *ngIf="sortKey === 'price'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+        </button>
     </div>
     <div>
         <label>Colors:</label>
@@ -43,9 +49,8 @@
             <option value="Sorcery">Sorcery</option>
             <option value="Vanguard">Vanguard</option>
         </select>
-
-        <button (click)="clearFilters()">Clear Filters</button>
     </div>
+    <button (click)="resetPage()">Clear All</button>
     <ul>
         <li *ngFor="let c of pagedCards">
             <img [src]="c.image_url">
