@@ -13,6 +13,7 @@
 
 <div>
     <ul>
+        <!-- List of decks with links to their cards and delete deck button -->
         <li *ngFor="let d of pagedDecks">
             <div>
                 <p>
@@ -25,6 +26,7 @@
 </div>
 
 <div class="pagination">
+    <!-- Pagination controls -->
     <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
     <span>Page {{currentPage}} of {{getTotalPages()}}</span>
     <button (click)="nextPage()" [disabled]="currentPage === getTotalPages()">Next</button>

@@ -1,8 +1,10 @@
+/* Pagination container styling */
 .pagination {
     text-align: center;
     margin-top: 20px;
 }
 
+/* Pagination button styling */
 .pagination button {
     margin: 0 5px;
     cursor: pointer;

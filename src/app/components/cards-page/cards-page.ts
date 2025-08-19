@@ -38,7 +38,8 @@ export class CardsPage implements OnInit {
     ngOnInit(): void {
         this.getCards();
     }
-    
+
+    // Fetch the list of cards from the backend using the DataService and set the pagedCards
     getCards() {
         console.log('Fetching with colors:', this.selectedColors, 'type:', this.selectedType);
         this.dataService.getCards(this.selectedColors, this.selectedType).subscribe((cards: CardData[]) => {
@@ -56,12 +57,14 @@ export class CardsPage implements OnInit {
         });
     }
 
+    // Calculate start and end indices for slicing the cards array
     setPagedCards() {
-        const startIndex = (this.currentPage - 1) * this.pageSize;
-        const endIndex = startIndex + this.pageSize;
-        this.pagedCards = [...this.cards.slice(startIndex, endIndex)];
+        const startIndex = (this.currentPage - 1) * this.pageSize; // Calculate the start index based on current page and page size
+        const endIndex = startIndex + this.pageSize; // Define the end index for slicing
+        this.pagedCards = [...this.cards.slice(startIndex, endIndex)]; // Slice the cards array to get the current page's cards
     }
 
+    // Check if there are more pages available to go to the next page and update the pagedCards
     nextPage() {
         if (this.currentPage * this.pageSize < this.cards.length) {
             this.currentPage++;
@@ -69,6 +72,7 @@ export class CardsPage implements OnInit {
         }
     }
 
+    // Check if the current page is greater than 1 to go to the previous page and update the pagedCards
     previousPage() {
         if (this.currentPage > 1) {
             this.currentPage--;
@@ -76,30 +80,37 @@ export class CardsPage implements OnInit {
         }
     }
 
+    // Calculate the total number of pages based on the total number of cards and page size
     getTotalPages(): number {
         return Math.ceil(this.cards.length / this.pageSize);
     }
 
+    // Send a POST request to add a new card using the DataService and refresh the card list
     addCard() {
         this.dataService.postCard(this.cardData).subscribe(() => {
-            this.cardData.name = '';
+            this.cardData.name = ''; // Clear the input field after adding the card
             this.getCards();
         });
     }
 
+    // Increment the amount_owned property of the card and update it using the DataService
     increaseAmountOwned(card: CardData) {
         card.amount_owned += 1;
         this.dataService.updateCard(card).subscribe(() => {
             this.getCards();
         });
     }
+
+    // Decrement the amount_owned property of the card and update or delete it using the DataService
     decreaseAmountOwned(card: CardData) {
+        // Only decrease if amount_owned is greater than 1
         if (card.amount_owned > 1) {
             card.amount_owned -= 1;
             this.dataService.updateCard(card).subscribe(() => {
                 this.getCards();
             });
-        } else if (card.amount_owned === 1){
+        } else if (card.amount_owned === 1) {
+            // If amount_owned is 1, set it to 0 and then delete the card
             card.amount_owned = 0;
             this.dataService.updateCard(card).subscribe(() => {
                 this.getCards();
@@ -110,6 +121,7 @@ export class CardsPage implements OnInit {
         }
     }
 
+    // Sort cards by name in ascending or descending order based on the sortbyNameAsc boolean
     sortByName() {
         if (this.sortKey === 'name') {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -120,6 +132,7 @@ export class CardsPage implements OnInit {
         this.applySorting()
     }
 
+    // Sort cards by price in ascending or descending order based on the sortbyPriceAsc boolean
     sortByPrice() {
         if (this.sortKey === 'price') {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
