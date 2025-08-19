@@ -11,10 +11,46 @@
 
 <div>
     <div>
-        <!-- Buttons to sort cards by name or price -->
-        <button (click)="sortByName()">Sort by Name</button>
-        <button (click)="sortByPrice()">Sort by Price</button>
+        <button (click)="sortByName()">
+            Sort by Name
+            <span *ngIf="sortKey === 'name'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+        </button>
+        <button (click)="sortByPrice()">
+            Sort by Price
+            <span *ngIf="sortKey === 'price'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+        </button>
     </div>
+    <div>
+        <label>Colors:</label>
+        <input type="checkbox" (change)="toggleColor('W', $event); applyFilters()"> White
+        <input type="checkbox" (change)="toggleColor('U', $event); applyFilters()"> Blue
+        <input type="checkbox" (change)="toggleColor('B', $event); applyFilters()"> Black
+        <input type="checkbox" (change)="toggleColor('R', $event); applyFilters()"> Red
+        <input type="checkbox" (change)="toggleColor('G', $event); applyFilters()"> Green
+        <input type="checkbox" (change)="toggleColor('C', $event); applyFilters()"> Colorless
+        <label>Type:</label>
+        <select [(ngModel)]="selectedType" (change)="applyFilters()">
+            <option value="">All Types</option>
+            <option value="Artifact">Artifact</option>
+            <option value="Battle">Battle</option>
+            <option value="Conspiracy">Conspiracy</option>
+            <option value="Creature">Creature</option>
+            <option value="Dungeon">Dungeon</option>
+            <option value="Emblem">Emblem</option>
+            <option value="Enchantment">Enchantment</option>
+            <option value="Hero">Hero</option>
+            <option value="Instant">Instant</option>
+            <option value="Kindred">Kindred</option>
+            <option value="Land">Land</option>
+            <option value="Phenomenon">Phenomenon</option>
+            <option value="Plane">Plane</option>
+            <option value="Planeswalker">Planeswalker</option>
+            <option value="Scheme">Scheme</option>
+            <option value="Sorcery">Sorcery</option>
+            <option value="Vanguard">Vanguard</option>
+        </select>
+    </div>
+    <button (click)="resetPage()">Clear All</button>
     <ul>
         <!-- List of cards with image, name, price, and amount owned with increase/decrease buttons -->
         <li *ngFor="let c of pagedCards">

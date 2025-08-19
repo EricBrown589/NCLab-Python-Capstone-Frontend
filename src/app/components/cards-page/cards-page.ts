@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { DataService } from "../../data-service";
 import { CommonModule } from "@angular/common";
-import { Observable } from "rxjs";
 import { FormsModule } from "@angular/forms";
 
 interface CardData {
@@ -29,10 +28,12 @@ export class CardsPage implements OnInit {
     pagedCards: CardData[] = [];
     currentPage = 1;
     pageSize = 12;
-    sortbyNameAsc = true;
-    sortbyPriceAsc = true;
+    sortKey: 'name' | 'price' | null = null;
+    sortDirection: 'asc' | 'desc' = 'asc';
+    selectedColors: string[] = [];
+    selectedType: string = '';
 
-    constructor(public route: Router, private dataService: DataService) { }
+    constructor(public route: Router, private dataService: DataService, private cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.getCards();
@@ -40,9 +41,19 @@ export class CardsPage implements OnInit {
 
     // Fetch the list of cards from the backend using the DataService and set the pagedCards
     getCards() {
-        this.dataService.getCards().subscribe((data: CardData[]) => {
-            this.cards = data;
+        console.log('Fetching with colors:', this.selectedColors, 'type:', this.selectedType);
+        this.dataService.getCards(this.selectedColors, this.selectedType).subscribe((cards: CardData[]) => {
+            console.log("Backend returned:", cards.length, "cards");
+            if (Array.isArray(cards)) {
+                this.cards = [...cards];
+            } else {
+                console.error('Expected an array of cards, but received:', cards);
+                this.cards = [];
+            }
+            this.currentPage = 1; // Reset to first page on new fetch
+            this.applySorting(); // Apply sorting after fetching
             this.setPagedCards();
+            this.cdr.detectChanges(); // Ensure view updates with new data
         });
     }
 
@@ -50,7 +61,7 @@ export class CardsPage implements OnInit {
     setPagedCards() {
         const startIndex = (this.currentPage - 1) * this.pageSize; // Calculate the start index based on current page and page size
         const endIndex = startIndex + this.pageSize; // Define the end index for slicing
-        this.pagedCards = this.cards.slice(startIndex, endIndex); // Slice the cards array to get the current page's cards
+        this.pagedCards = [...this.cards.slice(startIndex, endIndex)]; // Slice the cards array to get the current page's cards
     }
 
     // Check if there are more pages available to go to the next page and update the pagedCards
@@ -112,29 +123,75 @@ export class CardsPage implements OnInit {
 
     // Sort cards by name in ascending or descending order based on the sortbyNameAsc boolean
     sortByName() {
-        this.cards.sort((a, b) =>
-            // ternary operator if sortbyNameAsc is true, 
-            this.sortbyNameAsc
-                // sort ascending A -> Z
-                ? a.name.localeCompare(b.name)
-                // else sort descending Z -> A 
-                : b.name.localeCompare(a.name)
-        );
-        this.sortbyNameAsc = !this.sortbyNameAsc; // toggle the boolean
-        this.setPagedCards();   // update the pagedCards after sorting
+        if (this.sortKey === 'name') {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortKey = 'name';
+            this.sortDirection = 'asc';
+        }
+        this.applySorting()
     }
 
     // Sort cards by price in ascending or descending order based on the sortbyPriceAsc boolean
     sortByPrice() {
-        this.cards.sort((a, b) =>
-            // ternary operator if sortbyPriceAsc is true,
-            this.sortbyPriceAsc
-                // sort ascending 0 -> 9
-                ? a.price - b.price
-                // else sort descending 9 -> 0
-                : b.price - a.price
-        );
-        this.sortbyPriceAsc = !this.sortbyPriceAsc; // toggle the boolean
-        this.setPagedCards(); // update the pagedCards after sorting
+        if (this.sortKey === 'price') {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortKey = 'price';
+            this.sortDirection = 'asc';
+        }
+        this.applySorting()
+    }
+
+    applySorting() {
+        if (!this.sortKey) return;
+
+        this.cards = [...this.cards].sort((a, b) => {
+            if (this.sortKey === 'name') {
+                return this.sortDirection === 'asc'
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
+            }
+            if (this.sortKey === 'price') {
+                return this.sortDirection === 'asc'
+                    ? a.price - b.price
+                    : b.price - a.price;
+            }
+            return 0;
+        });
+    this.setPagedCards();
+    }
+
+    toggleColor(color: string, event: any) {
+        if (event.target.checked) {
+            if (!this.selectedColors.includes(color)) {
+                this.selectedColors = [...this.selectedColors, color];
+            }
+        } else {
+            this.selectedColors = this.selectedColors.filter(c => c !== color);
+        }
+        console.log("After toggle:", this.selectedColors);
+    }
+
+    applyFilters() {
+        this.currentPage = 1; // Reset to first page on filter change
+        this.getCards(); // Fetch cards with updated filters
+    }
+
+    resetPage() {
+        // Clear selected colors and type
+        this.selectedColors = [];
+        this.selectedType = '';
+        //Clear sorting
+        this.sortKey = null;
+        this.sortDirection = 'asc';
+        // Uncheck all checkboxes
+        const checkboxes = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            (checkbox.checked = false);
+        });
+        // Reset paged cards and current page
+        this.currentPage = 1; // Reset to first page on filter clear
+        this.getCards(); // Fetch all cards without filters
     }
 }
