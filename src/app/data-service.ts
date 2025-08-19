@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface CardData {
@@ -23,8 +23,16 @@ export class DataService {
 
   constructor(private http: HttpClient) {}
 
-  getCards(): Observable<CardData[]> {
-    return this.http.get<CardData[]>(`${this.apiURL}/cards`);
+  getCards(colors: string[] = [], type?: string): Observable<CardData[]> {
+    let params = new HttpParams();
+    colors.forEach(c => {
+      params = params.append('colors', c)
+    });
+    if (type) {
+      params = params.set('type', type);
+    }
+    console.log("Query params:", params.toString());
+    return this.http.get<CardData[]>(`${this.apiURL}/cards`, { params });
   }
 
   postCard(data: any): Observable<any> {

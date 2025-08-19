@@ -14,6 +14,38 @@
         <button (click)="sortByName()">Sort by Name</button>
         <button (click)="sortByPrice()">Sort by Price</button>
     </div>
+    <div>
+        <label>Colors:</label>
+        <input type="checkbox" (change)="toggleColor('W', $event); applyFilters()"> White
+        <input type="checkbox" (change)="toggleColor('U', $event); applyFilters()"> Blue
+        <input type="checkbox" (change)="toggleColor('B', $event); applyFilters()"> Black
+        <input type="checkbox" (change)="toggleColor('R', $event); applyFilters()"> Red
+        <input type="checkbox" (change)="toggleColor('G', $event); applyFilters()"> Green
+        <input type="checkbox" (change)="toggleColor('C', $event); applyFilters()"> Colorless
+        <label>Type:</label>
+        <select [(ngModel)]="selectedType" (change)="applyFilters()">
+            <option value="">All Types</option>
+            <option value="Artifact">Artifact</option>
+            <option value="Battle">Battle</option>
+            <option value="Conspiracy">Conspiracy</option>
+            <option value="Creature">Creature</option>
+            <option value="Dungeon">Dungeon</option>
+            <option value="Emblem">Emblem</option>
+            <option value="Enchantment">Enchantment</option>
+            <option value="Hero">Hero</option>
+            <option value="Instant">Instant</option>
+            <option value="Kindred">Kindred</option>
+            <option value="Land">Land</option>
+            <option value="Phenomenon">Phenomenon</option>
+            <option value="Plane">Plane</option>
+            <option value="Planeswalker">Planeswalker</option>
+            <option value="Scheme">Scheme</option>
+            <option value="Sorcery">Sorcery</option>
+            <option value="Vanguard">Vanguard</option>
+        </select>
+
+        <button (click)="clearFilters()">Clear Filters</button>
+    </div>
     <ul>
         <li *ngFor="let c of pagedCards">
             <img [src]="c.image_url">
