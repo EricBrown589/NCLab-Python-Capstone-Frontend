@@ -11,6 +11,7 @@
 
 <div>
     <div>
+        <!-- Sorting controls for name and price asc/desc -->
         <button (click)="sortByName()">
             Sort by Name
             <span *ngIf="sortKey === 'name'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -22,13 +23,16 @@
     </div>
     <div>
         <label>Colors:</label>
+        <!-- Checkboxes for selecting colors for filtering -->
         <input type="checkbox" (change)="toggleColor('W', $event); applyFilters()"> White
         <input type="checkbox" (change)="toggleColor('U', $event); applyFilters()"> Blue
         <input type="checkbox" (change)="toggleColor('B', $event); applyFilters()"> Black
         <input type="checkbox" (change)="toggleColor('R', $event); applyFilters()"> Red
         <input type="checkbox" (change)="toggleColor('G', $event); applyFilters()"> Green
         <input type="checkbox" (change)="toggleColor('C', $event); applyFilters()"> Colorless
+
         <label>Type:</label>
+        <!-- Dropdown for selecting card type for filtering -->
         <select [(ngModel)]="selectedType" (change)="applyFilters()">
             <option value="">All Types</option>
             <option value="Artifact">Artifact</option>

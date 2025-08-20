@@ -22,16 +22,16 @@ interface CardData {
 export class CardsPage implements OnInit {
 
     cardData = {
-        name: ''
+        name: '' // Object to hold card name for adding a new card
     }
-    cards: CardData[] = [];
-    pagedCards: CardData[] = [];
-    currentPage = 1;
-    pageSize = 12;
-    sortKey: 'name' | 'price' | null = null;
-    sortDirection: 'asc' | 'desc' = 'asc';
-    selectedColors: string[] = [];
-    selectedType: string = '';
+    cards: CardData[] = []; // Array to hold all cards fetched from the backend
+    pagedCards: CardData[] = []; // Array to hold the current page's cards
+    currentPage = 1; // Current page number
+    pageSize = 12; // Number of cards to display per page
+    sortKey: 'name' | 'price' | null = null; // Key to sort by, can be 'name', 'price', or null for no sorting
+    sortDirection: 'asc' | 'desc' = 'asc'; // Direction of sorting, can be 'asc' or 'desc'
+    selectedColors: string[] = []; // Array to hold selected colors for filtering
+    selectedType: string = ''; // Variable to hold selected type for filtering
 
     constructor(public route: Router, private dataService: DataService, private cdr: ChangeDetectorRef) {}
 
@@ -66,7 +66,9 @@ export class CardsPage implements OnInit {
 
     // Check if there are more pages available to go to the next page and update the pagedCards
     nextPage() {
+        // Check if the current page multiplied by page size is less than the total number of cards
         if (this.currentPage * this.pageSize < this.cards.length) {
+            // If there are more pages, increment the current page and update pagedCards
             this.currentPage++;
             this.setPagedCards();
         }
@@ -121,47 +123,56 @@ export class CardsPage implements OnInit {
         }
     }
 
-    // Sort cards by name in ascending or descending order based on the sortbyNameAsc boolean
+    // Sort cards by name in ascending order and update the pagedCards
     sortByName() {
+        // If already sorted by name, toggle the direction; otherwise, set to ascending
         if (this.sortKey === 'name') {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
+            // Set sortKey to name and default to ascending order
             this.sortKey = 'name';
             this.sortDirection = 'asc';
         }
         this.applySorting()
     }
 
-    // Sort cards by price in ascending or descending order based on the sortbyPriceAsc boolean
+    // Sort cards by price in ascending order and update the pagedCards
     sortByPrice() {
+        // If already sorted by price, toggle the direction; otherwise, set to ascending
         if (this.sortKey === 'price') {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
+        } else { 
+            // Set sortKey to price and default to ascending order
             this.sortKey = 'price';
             this.sortDirection = 'asc';
         }
         this.applySorting()
     }
 
+    // Apply sorting based on the selected sort key and direction
     applySorting() {
-        if (!this.sortKey) return;
-
+        if (!this.sortKey) return; // If no sort key is selected, do nothing
         this.cards = [...this.cards].sort((a, b) => {
+            // Sort by name
             if (this.sortKey === 'name') {
+                // Compare names in a case-insensitive manner
                 return this.sortDirection === 'asc'
-                    ? a.name.localeCompare(b.name)
-                    : b.name.localeCompare(a.name);
+                    ? a.name.localeCompare(b.name) // Ascending order
+                    : b.name.localeCompare(a.name); // Descending order
             }
-            if (this.sortKey === 'price') {
+            // Sort by price
+            if (this.sortKey === 'price') { 
+                // Compare prices numerically
                 return this.sortDirection === 'asc'
-                    ? a.price - b.price
-                    : b.price - a.price;
+                    ? a.price - b.price // Ascending order
+                    : b.price - a.price; // Descending order
             }
-            return 0;
+            return 0; // Default case, no sorting applied
         });
     this.setPagedCards();
     }
 
+    // Toggle the selection of a color and update the selectedColors array
     toggleColor(color: string, event: any) {
         if (event.target.checked) {
             if (!this.selectedColors.includes(color)) {
@@ -173,16 +184,16 @@ export class CardsPage implements OnInit {
         console.log("After toggle:", this.selectedColors);
     }
 
+    // Fetch cards with selected filters and reset the current page to 1
     applyFilters() {
-        this.currentPage = 1; // Reset to first page on filter change
-        this.getCards(); // Fetch cards with updated filters
+        this.currentPage = 1; 
+        this.getCards(); 
     }
 
+    // Clear all selected filters and sorting, reset the current page to 1, and fetch all cards
     resetPage() {
-        // Clear selected colors and type
         this.selectedColors = [];
         this.selectedType = '';
-        //Clear sorting
         this.sortKey = null;
         this.sortDirection = 'asc';
         // Uncheck all checkboxes
@@ -190,8 +201,7 @@ export class CardsPage implements OnInit {
         checkboxes.forEach(checkbox => {
             (checkbox.checked = false);
         });
-        // Reset paged cards and current page
-        this.currentPage = 1; // Reset to first page on filter clear
-        this.getCards(); // Fetch all cards without filters
+        this.currentPage = 1;
+        this.getCards();
     }
 }
