@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef  } from "@angular/core";
 import { Router } from "@angular/router";
 import { DataService } from "../../data-service";
 import { CommonModule } from "@angular/common";
@@ -26,7 +26,7 @@ export class DeckPage implements OnInit {
     currentPage = 1;
     pageSize = 10;
 
-    constructor(private router: Router, public route: Router, private dataService: DataService) {}
+    constructor(public route: Router, private dataService: DataService, private cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.getDecks();
@@ -37,6 +37,7 @@ export class DeckPage implements OnInit {
         this.dataService.getDecks().subscribe((data: DeckData[]) => {
             this.decks = data;
             this.setPagedDecks();
+            this.cdr.detectChanges();
         });
     }
 

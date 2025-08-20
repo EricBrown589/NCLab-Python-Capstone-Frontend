@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { DataService } from '../../data-service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -29,7 +29,7 @@ export class DeckCards implements OnInit {
   currentPage = 1;
   pageSize = 12;
 
-  constructor(private dataService: DataService, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // Subscribe to route parameters to get the deckId
@@ -44,6 +44,7 @@ export class DeckCards implements OnInit {
     this.dataService.getDeckCards(this.deckId).subscribe((data: CardData[]) => {
       this.cards = data;
       this.setPagedCards();
+      this.cdr.detectChanges();
     });
   }
 
