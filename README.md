@@ -8,8 +8,11 @@
 [![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
 [![CSS](https://img.shields.io/badge/CSS-639?logo=css&logoColor=fff)](#)
 
-A local Angular UI for managing Magic: The Gathering cards and decks.
-This frontend communicates with the companion Flask REST API to fetch, manage, and display card/deck data.
+A local Angular UI for managing Magic: The Gathering cards and decks. A user should be able to view, sort, 
+and filter their collection of cards. They should also be able to view and create decks and be able to add cards
+to their decks.
+
+This application communicates with the companion Flask REST API to fetch, manage, and display card/deck data.
 
 This project was created as part of a capstone project and is still a work in progress.
 
